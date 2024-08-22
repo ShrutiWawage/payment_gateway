@@ -8,9 +8,84 @@ import amexLogo from '../assets/images/amex.svg';
 
 const PaymentForm = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
+  const [cardOwner, setCardOwner] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationMonth, setExpirationMonth] = useState('');
+  const [expirationYear, setExpirationYear] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handlePaymentChange = (e) => {
     setSelectedPaymentMethod(e.target.value);
+  };
+
+  const validateCardNumber = (number) => {
+    const regex = /^\d{16}$/;
+    return regex.test(number);
+  };
+
+  const validateExpirationDate = () => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth() + 1;
+
+    if (expirationYear < currentYear || (expirationYear === currentYear && expirationMonth < currentMonth)) {
+      setErrorMessage('Expiration date cannot be in the past.');
+      return false;
+    }
+    setErrorMessage('');
+    return true;
+  };
+
+  const validateCvv = (cvv) => {
+    const regex = /^\d{3,4}$/;
+    return regex.test(cvv);
+  };
+
+  const validateCardOwner = (name) => {
+    const regex = /^[A-Za-z\s]*$/; // Regex to allow only letters and spaces
+    return regex.test(name);
+  };
+
+  const handleCardOwnerChange = (e) => {
+    const value = e.target.value;
+    if (validateCardOwner(value)) {
+      setCardOwner(value);
+      setErrorMessage(''); // Clear error message if input is valid
+    } else {
+      setErrorMessage('Invalid card owner name. It should not contain numeric values.');
+    }
+  };
+
+  const handleCvvChange = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 4) {
+      setCvv(value);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validateCardOwner(cardOwner)) {
+      setErrorMessage('Invalid card owner name. It should not contain numeric values.');
+      return;
+    }
+    if (!validateCardNumber(cardNumber)) {
+      setErrorMessage('Invalid card number. Please enter a 16-digit card number.');
+      return;
+    }
+    if (!validateCvv(cvv)) {
+      setErrorMessage('Invalid CVV. Please enter a 3 or 4-digit CVV.');
+      return;
+    }
+    if (!validateExpirationDate()) {
+      return; // Error message is already set
+    }
+    // Placeholder for saving data
+    // e.g., Save data to the server or local storage
+
+    setSuccessMessage('Payment details saved successfully! Your transaction is being processed.');
+    setErrorMessage(''); // Clear any existing errors
   };
 
   const renderPaymentDetails = () => {
@@ -60,7 +135,7 @@ const PaymentForm = () => {
     <div className="container py-5">
       <div className="row mb-4">
         <div className="col-lg-8 mx-auto text-center">
-        <h1 className="display-6 custom-font">Payment Forms</h1>
+          <h1 className="display-6 custom-font">Payment Forms</h1>
         </div>
       </div>
       <div className="row">
@@ -88,21 +163,39 @@ const PaymentForm = () => {
               </div>
             </div>
             <div className="card-body">
-            <div className="tab-content">
+              {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+              {successMessage && <div className="alert alert-success">{successMessage}</div>}
+              <div className="tab-content">
                 <div id="credit-card" className="tab-pane fade show active pt-3">
-                  <form onSubmit={(e) => e.preventDefault()}>
+                  <form onSubmit={handleSubmit}>
                     <div className="form-group">
                       <label>
                         <h6>Card Owner</h6>
                       </label>
-                      <input type="text" placeholder="Card Owner Name" required className="form-control" />
+                      <input
+                        type="text"
+                        placeholder="Card Owner Name"
+                        required
+                        className="form-control"
+                        value={cardOwner}
+                        onChange={handleCardOwnerChange}
+                        minLength="3"
+                      />
                     </div>
                     <div className="form-group" style={{ marginBottom: '10px' }}>
                       <label>
                         <h6>Card Number</h6>
                       </label>
                       <div className="input-group" style={{ marginBottom: '5px' }}>
-                        <input type="text" placeholder="Valid card number" className="form-control" required />
+                        <input
+                          type="text"
+                          placeholder="Valid card number"
+                          className="form-control"
+                          required
+                          value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value)}
+                          maxLength="16"
+                        />
                         <div className="input-group-append">
                           <span className="input-group-text text-muted">
                             <img src={visaLogo} alt="Visa" className="payment-logo" />
@@ -111,8 +204,8 @@ const PaymentForm = () => {
                           </span>
                         </div>
                       </div>
+                      {errorMessage.includes('card number') && <p className="text-danger">{errorMessage}</p>}
                     </div>
-
 
                     <div className="row">
                       <div className="col-sm-8">
@@ -121,22 +214,51 @@ const PaymentForm = () => {
                             <h6>Expiration Date</h6>
                           </label>
                           <div className="input-group">
-                            <input type="number" placeholder="MM" className="form-control" required />
-                            <input type="number" placeholder="YY" className="form-control" required />
+                            <input
+                              type="number"
+                              placeholder="MM"
+                              className="form-control"
+                              value={expirationMonth}
+                              onChange={(e) => setExpirationMonth(Number(e.target.value))}
+                              required
+                              min="1"
+                              max="12"
+                            />
+                            <input
+                              type="number"
+                              placeholder="YY"
+                              className="form-control"
+                              value={expirationYear}
+                              onChange={(e) => setExpirationYear(Number(e.target.value))}
+                              required
+                              min={new Date().getFullYear() % 100}
+                              max={new Date().getFullYear() % 100 + 20}
+                            />
                           </div>
+                          {errorMessage.includes('Expiration date') && <p className="text-danger">{errorMessage}</p>}
                         </div>
                       </div>
                       <div className="col-sm-4">
                         <div className="form-group mb-4">
-                          <label data-toggle="tooltip" title="Three digit CV code on the back of your card">
-                            <h6>CVV <i className="fa fa-question-circle d-inline"></i></h6>
+                          <label>
+                            <h6>CVV</h6>
                           </label>
-                          <input type="text" required className="form-control" />
+                          <input
+                            type="text"
+                            placeholder="CVV"
+                            className="form-control"
+                            value={cvv}
+                            onChange={handleCvvChange}
+                            required
+                            maxLength="4"
+                          />
+                          {errorMessage.includes('CVV') && <p className="text-danger">{errorMessage}</p>}
                         </div>
                       </div>
                     </div>
+
                     <div className="card-footer">
-                      <button type="button" className="subscribe btn btn-primary btn-block shadow-sm">
+                      <button type="submit" className="subscribe btn btn-primary btn-block shadow-sm">
                         Confirm Payment
                       </button>
                     </div>
