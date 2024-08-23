@@ -1,83 +1,80 @@
-/* PaymentForm.css */
-body{background: #f5f5f5}.rounded{border-radius: 1rem}.nav-pills .nav-link{color: #555}.nav-pills .nav-link.active{color: white}input[type="radio"]{margin-right: 5px}.bold{font-weight:bold}
-/* PaymentForm.css */
-
-/* Import Poppins font */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-/* Apply Poppins font to the body or specific elements */
-body {
-  font-family: 'Poppins', sans-serif;
+.feedback-form {
+  width: 70%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
 }
 
-.custom-font {
-  font-family: 'Poppins', sans-serif;
+.feedback-form h1 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
 }
 
-/* Example for heading */
-.custom-font h1 {
-  font-weight: 700; /* Adjust font weight as needed */
-  font-size: 2rem; /* Adjust size as needed */
-  color: #333; /* Adjust color as needed */
+.question-block {
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-
-/* Card Icon Styles */
-/* Card Icon Styles */
-.card-icons {
+.emoji-options {
   display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.emoji {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s, border 0.3s;
+  border-radius: 50%;
+  padding: 0.1rem;
+  border: 2px solid transparent;
+  margin: 0 0.1rem;
+}
+
+.emoji.selected {
+  color: gold;
+  border: 2px solid black;
+}
+
+.comments-section {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  width: 150px; /* Adjust width as needed */
+  margin: 20px 0;
 }
 
-.card-icons i {
-  font-size: 36px; /* Adjust size as needed */
-  width: 36px; /* Ensure logos have the same width */
-  height: 36px; /* Ensure logos have the same height */
-  object-fit: contain;
+.comments-section label {
+  flex: 1;
+  margin-right: 10px;
 }
 
-/* Ensure images are properly sized and displayed */
-.card-icons img {
-  width: 40px; /* Adjust width to fit your design */
-  height: auto; /* Maintain aspect ratio */
+.comments-section textarea {
+  flex: 2;
+  padding: 5px;
+  font-size: 1rem;
+  resize: none;
 }
 
-/* Adjust the size for smaller screens */
-@media (max-width: 768px) {
-  .card-icons img {
-    width: 30px; /* Smaller width for smaller screens */
-  }
-}
-.payment-logo {
-  height: 24px; /* Adjust as needed */
-  width: auto; /* Maintain aspect ratio */
-  margin: 0 5px; /* Space between logos */
-}
-/* Adjust the margin for form groups */
-.form-group {
-  margin-bottom: 10px; /* Adjust as needed */
+.image-upload {
+  margin-left: 20px;
 }
 
-/* Reduce padding in input groups */
-.input-group {
-  margin-bottom: 5px; /* Adjust as needed */
+.submit-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 0.9rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Optionally adjust margin in card-header */
-.card-header {
-  padding: 10px 15px; /* Adjust as needed */
+.submit-btn:hover {
+  background-color: #0056b3;
 }
-/* Reduce space below card number section */
-/* PaymentForm.css */
-
-/* Add margin or padding to adjust vertical position */
-.card-body {
-  margin-top: -20px; /* Move up by 20px, adjust as needed */
-}
-
-/* Or, if you prefer padding adjustments */
-.card-body {
-  padding-top: 10px; /* Adjust to reduce space above */
-}
-

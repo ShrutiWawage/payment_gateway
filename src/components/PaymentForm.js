@@ -281,7 +281,8 @@ const PaymentForm = () => {
                 <div id="net-banking" className="container tab-pane fade"><br />
                   <div className="form-group">
                     <label>
-                      <h6>Select your Bank</h6>
+                      <h6>Select your Bank</h6>ls -R react-templates
+
                     </label>
                     <select className="form-control">
                       <option value="" disabled>--Please select your Bank--</option>
